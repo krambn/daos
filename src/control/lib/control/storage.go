@@ -57,6 +57,10 @@ type HostStorage struct {
 	// this configuration.
 	ScmMountPoints storage.ScmMountPoints `hash:"set"`
 
+	// SmdInfo contains information obtained by querying the
+	// host's metadata table, if available.
+	SmdInfo *SmdInfo
+
 	// RebootRequired indicates that a host reboot is necessary in order
 	// to achieve some goal (SCM prep, etc.)
 	RebootRequired bool
