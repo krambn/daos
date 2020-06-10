@@ -58,6 +58,14 @@ def component_repos() {
     return cachedCommitPragma(pragma: 'PR-repos')
 }
 
+def el7_component_repos() {
+    return cachedCommitPragma(pragma: 'PR-repos-el7')
+}
+
+def leap15_component_repos() {
+    return cachedCommitPragma(pragma: 'PR-repos-leap15')
+}
+
 def daos_repo() {
     if (cachedCommitPragma(pragma: 'RPM-test-version') == '') {
         return "daos@${env.BRANCH_NAME}:${env.BUILD_NUMBER}"
@@ -67,11 +75,13 @@ def daos_repo() {
 }
 
 def el7_daos_repos() {
-    return el7_component_repos + ' ' + component_repos() + ' ' + daos_repo()
+    return el7_component_repos() + ' ' + component_repos() +
+           ' ' + daos_repo()
 }
 
 def leap15_daos_repos() {
-    return leap15_component_repos + ' ' + component_repos() + ' ' + daos_repo()
+    return leap15_component_repos() + ' ' + component_repos() +
+           ' ' + daos_repo()
 }
 
 commit_pragma_cache = [:]
@@ -162,8 +172,6 @@ target_branch = env.CHANGE_TARGET ? env.CHANGE_TARGET : env.BRANCH_NAME
 def arch = ""
 def sanitized_JOB_NAME = JOB_NAME.toLowerCase().replaceAll('/', '-').replaceAll('%2f', '-')
 
-el7_component_repos = ""
-leap15_component_repos = ""
 def functional_rpms = "openmpi3 hwloc ndctl " +
                       "ior-hpc-cart-4-daos-0 " +
                       "romio-tests-cart-4-daos-0 hdf5-tests-cart-4-daos-0 " +
