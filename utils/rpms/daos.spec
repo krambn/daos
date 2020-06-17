@@ -237,6 +237,7 @@ getent passwd daos_server >/dev/null || useradd -M daos_server
 # the 4 tools following it need it
 %{_libdir}/libdaos_tests.so
 %{_bindir}/vos_size
+%{_bindir}/vos_size_dfs_sample
 %{_bindir}/io_conf
 %{_bindir}/jump_pl_map
 %{_bindir}/ring_pl_map
@@ -364,6 +365,9 @@ getent passwd daos_server >/dev/null || useradd -M daos_server
 %{_libdir}/*.a
 
 %changelog
+* Tue Jun 16 2020 Jonathan Martinez Montes <jonathan.martinez.montes@intel.com> - 1.1.0-24
+- Add new daos utility binary
+
 * Fri Jun 05 2020 Ryon Jensen <ryon.jensen@intel.com> - 1.1.0-23
 - Add libisa-l_crypto dependency
 
