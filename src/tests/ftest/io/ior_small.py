@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """
-  (C) Copyright 2018-2019 Intel Corporation.
+  (C) Copyright 2018-2019Copyright 2018-2020 Intel Corporation.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 """
 
 from ior_test_base import IorTestBase
+from apricot import skipForTicket
 
 
 class IorSmall(IorTestBase):
@@ -32,6 +33,8 @@ class IorSmall(IorTestBase):
     :avocado: recursive
     """
 
+    @skipForTicket('DAOS-5132', on_distros=[(u'opensuse-leap',
+                                             u'15.1', u'n/a')])
     def test_ior_small(self):
         """Jira ID: DAOS-2715.
 

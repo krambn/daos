@@ -94,8 +94,8 @@ post_provision_config_nodes() {
     #if [ -n "$INST_RPMS" ]; then
         #yum -y erase $INST_RPMS
     #fi
-    if ! zypper --non-interactive in ed nfs-client ipmctl ndctl sudo \
-                                     nfs-kernel-server               \
+    if ! zypper --non-interactive in ed nfs-client ipmctl ndctl sudo  \
+                                     nfs-kernel-server python2-distro \
                                      $INST_RPMS; then
         rc=${PIPESTATUS[0]}
         for file in /etc/zypp/repos.d/*.repo; do
