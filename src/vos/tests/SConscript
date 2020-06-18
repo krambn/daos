@@ -13,11 +13,11 @@ def scons():
     # Add runtime paths for daos libraries
     denv.AppendUnique(RPATH=[Literal(r'\$$ORIGIN/../lib64/daos_srv')])
     vtsenv = denv.Clone()
-    vtsenv.AppendUnique(LIBPATH=['$BUILD_DIR/src/cart/src/cart',
-                                 '$BUILD_DIR/src/cart/src/gurt',
-                                 '$BUILD_DIR/src/client/api',
-                                 '$BUILD_DIR/src/client/dfs',
-                                 '$BUILD_DIR/src/common'])
+    vtsenv.AppendUnique(LIBPATH=['$BUILD_DIR/src/cart/src/cart'])
+    vtsenv.AppendUnique(LIBPATH=['$BUILD_DIR/src/cart/src/gurt'])
+    vtsenv.AppendUnique(LIBPATH=['$BUILD_DIR/src/client/api'])
+    vtsenv.AppendUnique(LIBPATH=['$BUILD_DIR/src/client/dfs'])
+    vtsenv.AppendUnique(LIBPATH=['$BUILD_DIR/src/common'])
 
     vtsenv.Append(CPPDEFINES={'VOS_UNIT_TEST' : '1'})
 
@@ -33,12 +33,12 @@ def scons():
                                  LIBS=libraries)
 
     # Add runtime paths for vos_size_dfs_sample
-    vtsenv.AppendUnique(RPATH=[Literal(r'\$$ORIGIN/..'),
-                               Literal(r'\$$ORIGIN/../../cart/src/cart'),
-                               Literal(r'\$$ORIGIN/../../cart/src/gurt'),
-                               Literal(r'\$$ORIGIN/../../client/api'),
-                               Literal(r'\$$ORIGIN/../../client/dfs'),
-                               Literal(r'\$$ORIGIN/../../common')])
+    vtsenv.AppendUnique(RPATH=[Literal(r'\$$ORIGIN/..')])
+    vtsenv.AppendUnique(RPATH=[Literal(r'\$$ORIGIN/../../cart/src/cart')])
+    vtsenv.AppendUnique(RPATH=[Literal(r'\$$ORIGIN/../../cart/src/gurt')])
+    vtsenv.AppendUnique(RPATH=[Literal(r'\$$ORIGIN/../../client/api')])
+    vtsenv.AppendUnique(RPATH=[Literal(r'\$$ORIGIN/../../client/dfs')])
+    vtsenv.AppendUnique(RPATH=[Literal(r'\$$ORIGIN/../../common')])
 
     vos_size = daos_build.program(denv, 'vos_size', ['vos_size.c'],
                                   LIBS=libraries)

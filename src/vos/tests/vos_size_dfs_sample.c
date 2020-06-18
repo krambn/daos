@@ -128,7 +128,7 @@ print_list(FILE *fp, const char *key, char values[][DFS_MAX_PATH],
 }
 
 void
-print_dkey(FILE *fp, daos_key_t	*dkey, daos_iod_t *iods, int akey_count)
+print_dkey(FILE *fp, daos_key_t *dkey, daos_iod_t *iods, int akey_count)
 {
 	int i = 0;
 	char buf[DFS_MAX_PATH];
@@ -239,8 +239,8 @@ main(int argc, char **argv)
 	int				 rc;
 	int				 index = 0;
 	int				 opt = 0;
-	int					akey_count;
-	int					dfs_inode_size;
+	int				akey_count;
+	int				dfs_inode_size;
 
 	rc = daos_debug_init(NULL);
 	if (rc) {
