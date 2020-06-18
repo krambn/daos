@@ -65,10 +65,10 @@ def skipForTicket(ticket, on_distros=[]):
 
     # see if we are skipping only on some distros and if our distro is one
     # of them
-    if on_distros and \
-        distro.linux_distribution(full_distribution_name=False) not in \
-        on_distros:
-        return False
+    if on_distros:
+        my_distro = distro.linux_distribution(full_distribution_name=False)
+        if my_distro[0] + '-' + my_distro[1] in on_distros:
+            return False
 
     return skip("Skipping until {} is fixed.".format(ticket))
 # pylint: enable=invalid-name

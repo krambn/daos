@@ -33,8 +33,7 @@ class IorSmall(IorTestBase):
     :avocado: recursive
     """
 
-    @skipForTicket('DAOS-5132', on_distros=[(u'opensuse-leap',
-                                             u'15.1', u'n/a')])
+    @skipForTicket('DAOS-5132', on_distros=[u'opensuse-leap-15.1'])
     def test_ior_small(self):
         """Jira ID: DAOS-2715.
 
