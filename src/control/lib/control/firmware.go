@@ -27,6 +27,11 @@ package control
 import (
 	"context"
 
+	"github.com/golang/protobuf/proto"
+	"github.com/pkg/errors"
+	"google.golang.org/grpc"
+
+	ctlpb "github.com/daos-stack/daos/src/control/common/proto/ctl"
 	"github.com/daos-stack/daos/src/control/server/storage"
 )
 
@@ -55,11 +60,56 @@ type (
 	}
 )
 
+// addHostResponse is responsible for validating the given HostResponse
+// and adding it to the FirmwareQueryResp.
+func (ssp *FirmwareQueryResp) addHostResponse(hr *HostResponse) error {
+	pbResp, ok := hr.Message.(*ctlpb.FirmwareQueryResp)
+	if !ok {
+		return errors.Errorf("unable to unpack message: %+v", hr.Message)
+	}
+
+	scmResults := make([]*SCMFirmwareQueryResult, 0, len(pbResp.ScmResults))
+
+	for _, pbScmRes := range pbResp.ScmResults {
+		scmResults = append(scmResults, &SCMFirmwareQueryResult{
+			DeviceUID:    pbScmRes.Uid,
+			DeviceHandle: pbScmRes.Handle,
+		})
+	}
+	return nil
+}
+
 // FirmwareQuery concurrently requests device firmware information from
 // all hosts supplied in the request's hostlist, or all configured hosts
 // if not explicitly specified. The function blocks until all results
 // (successful or otherwise) are received, and returns a single response
 // structure containing results for all host firmware query operations.
-func FirmwareQuery(ctx context.Context, req *FirmwareQueryReq) (*FirmwareQueryResp, error) {
-	return nil, nil
+func FirmwareQuery(ctx context.Context, rpcClient UnaryInvoker, req *FirmwareQueryReq) (*FirmwareQueryResp, error) {
+	req.setRPC(func(ctx context.Context, conn *grpc.ClientConn) (proto.Message, error) {
+		return ctlpb.NewMgmtCtlClient(conn).FirmwareQuery(ctx, &ctlpb.FirmwareQueryReq{
+			QueryScm:  req.SCM,
+			QueryNvme: req.NVMe,
+		})
+	})
+
+	unaryResp, err := rpcClient.InvokeUnaryRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	resp := new(FirmwareQueryResp)
+	for _, hostResp := range unaryResp.Responses {
+		if hostResp.Error != nil {
+			if err := resp.addHostError(hostResp.Addr, hostResp.Error); err != nil {
+				return nil, err
+			}
+			continue
+		}
+
+		if err := resp.addHostResponse(hostResp); err != nil {
+			return nil, err
+		}
+	}
+
+	return resp, nil
 }
