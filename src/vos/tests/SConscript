@@ -39,19 +39,28 @@ def scons():
     dlenv.AppendUnique(LIBPATH=['$BUILD_DIR/src/common'])
 
     libraries = ['daos', 'daos_common', 'dfs', 'gurt', 'cart', 'pmemobj']
+
     dfs_sample = daos_build.program(dlenv, 'vos_size_dfs_sample',
                                     ['vos_size_dfs_sample.c'], LIBS=libraries)
 
-    dlenv.Install('$PREFIX/bin/', [dfs_sample])
-
     # Create the VOS sample yaml file with the DFS layout
     dlenv['DFS_SAMPLE_DIR'] = '$BUILD_DIR/src/vos/tests'
+
+    run_dfs_sample = ['LD_LIBRARY_PATH=$LD_LIBRARY_PATH:'
+                      '$BUILD_DIR/src/cart/src/cart:'
+                      '$BUILD_DIR/src/cart/src/gurt:'
+                      '$BUILD_DIR/src/client/api:'
+                      '$BUILD_DIR/src/client/dfs:'
+                      '$BUILD_DIR/src/common '
+                      '$DFS_SAMPLE_DIR/vos_size_dfs_sample -f '
+                      '$DFS_SAMPLE_DIR/vos_dfs_sample.yaml']
+
     sample_file = dlenv.Command('$DFS_SAMPLE_DIR/vos_dfs_sample.yaml',
                                 dfs_sample,
-                                '$PREFIX/bin/vos_size_dfs_sample -f '
-                                '$DFS_SAMPLE_DIR/vos_dfs_sample.yaml')
+                                run_dfs_sample)
 
     # Install artifacts
+    dlenv.Install('$PREFIX/bin/', [dfs_sample])
     dlenv.Install('$PREFIX/etc/', ['vos_size_input.yaml'])
     dlenv.Install('$PREFIX/etc/', sample_file)
     denv.Install('$PREFIX/bin/', [vos_tests, vos_size, evt_ctl,
