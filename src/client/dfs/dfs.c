@@ -38,21 +38,13 @@
 /** D-key name of SB metadata */
 #define SB_DKEY		"DFS_SB_METADATA"
 
-#define SB_AKEYS		9
+#define SB_AKEYS	5
 /** A-key name of SB magic */
-#define MAGIC_NAME		"DFS_MAGIC"
+#define MAGIC_NAME	"DFS_MAGIC"
 /** A-key name of SB version */
 #define SB_VERSION_NAME	"DFS_SB_VERSION"
 /** A-key name of DFS Layout Version */
-#define LAYOUT_NAME		"DFS_LAYOUT_VERSION"
-/** A-key name of DFS feature flags */
-#define FEAT_COMPAT_NAME	"DFS_SB_FEAT_COMPAT"
-/** A-key name of DFS feature flags */
-#define FEAT_INCO_NAME	"DFS_SB_FEAT_INCOMPAT"
-/** A-key name of DFS namespace creation time */
-#define MKFS_TIME_NAME	"DFS_SB_MKFS_TIME"
-/** A-key name of FS state*/
-#define STATE_NAME		"DFS_SB_STATE"
+#define LAYOUT_NAME	"DFS_LAYOUT_VERSION"
 /** A-key name of Default chunk size */
 #define CS_NAME		"DFS_CHUNK_SIZE"
 /** A-key name of Default Object Class */
@@ -858,7 +850,7 @@ open_symlink(dfs_t *dfs, daos_handle_t th, dfs_obj_t *parent, int flags,
 	return ENOTSUP;
 }
 
-static inline void
+static void
 set_daos_iod(bool create, daos_iod_t *iod, char *buf, size_t size)
 {
 	d_iov_set(&iod->iod_name, buf, strlen(buf));
@@ -884,10 +876,6 @@ create_sb(bool create, daos_iod_t *iods, daos_key_t *dkey)
 	set_daos_iod(create, &iods[i++], LAYOUT_NAME, sizeof(dfs_layout_ver_t));
 	set_daos_iod(create, &iods[i++], CS_NAME, sizeof(daos_size_t));
 	set_daos_iod(create, &iods[i++], OC_NAME, sizeof(daos_oclass_id_t));
-	set_daos_iod(create, &iods[i++], FEAT_COMPAT_NAME, sizeof(daos_size_t));
-	set_daos_iod(create, &iods[i++], FEAT_INCO_NAME, sizeof(daos_size_t));
-	set_daos_iod(create, &iods[i++], MKFS_TIME_NAME, sizeof(daos_size_t));
-	set_daos_iod(create, &iods[i++], STATE_NAME, sizeof(daos_size_t));
 }
 
 static int
@@ -902,10 +890,6 @@ open_sb(daos_handle_t coh, bool create, dfs_attr_t *attr, daos_handle_t *oh)
 	dfs_layout_ver_t	layout_ver;
 	daos_size_t		chunk_size = 0;
 	daos_oclass_id_t	oclass = OC_UNKNOWN;
-	daos_size_t		feat_compat;
-	daos_size_t		feat_incopat;
-	daos_size_t		mkfs_time;
-	daos_size_t		state_time;
 	daos_obj_id_t		super_oid;
 	int			i, rc;
 
@@ -929,10 +913,6 @@ open_sb(daos_handle_t coh, bool create, dfs_attr_t *attr, daos_handle_t *oh)
 	d_iov_set(&sg_iovs[2], &layout_ver, sizeof(dfs_layout_ver_t));
 	d_iov_set(&sg_iovs[3], &chunk_size, sizeof(daos_size_t));
 	d_iov_set(&sg_iovs[4], &oclass, sizeof(daos_oclass_id_t));
-	d_iov_set(&sg_iovs[5], &feat_compat, sizeof(daos_size_t));
-	d_iov_set(&sg_iovs[6], &feat_incopat, sizeof(daos_size_t));
-	d_iov_set(&sg_iovs[7], &mkfs_time, sizeof(daos_size_t));
-	d_iov_set(&sg_iovs[8], &state_time, sizeof(daos_size_t));
 
 	for (i = 0; i < SB_AKEYS; i++) {
 		sgls[i].sg_nr		= 1;
