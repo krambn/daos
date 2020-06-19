@@ -902,6 +902,10 @@ open_sb(daos_handle_t coh, bool create, dfs_attr_t *attr, daos_handle_t *oh)
 	dfs_layout_ver_t	layout_ver;
 	daos_size_t		chunk_size = 0;
 	daos_oclass_id_t	oclass = OC_UNKNOWN;
+	daos_size_t		feat_compat;
+	daos_size_t		feat_incopat;
+	daos_size_t		mkfs_time;
+	daos_size_t		state_time;
 	daos_obj_id_t		super_oid;
 	int			i, rc;
 
@@ -925,10 +929,10 @@ open_sb(daos_handle_t coh, bool create, dfs_attr_t *attr, daos_handle_t *oh)
 	d_iov_set(&sg_iovs[2], &layout_ver, sizeof(dfs_layout_ver_t));
 	d_iov_set(&sg_iovs[3], &chunk_size, sizeof(daos_size_t));
 	d_iov_set(&sg_iovs[4], &oclass, sizeof(daos_oclass_id_t));
-	d_iov_set(&sg_iovs[5], &oclass, sizeof(daos_size_t));
-	d_iov_set(&sg_iovs[6], &oclass, sizeof(daos_size_t));
-	d_iov_set(&sg_iovs[7], &oclass, sizeof(daos_size_t));
-	d_iov_set(&sg_iovs[8], &oclass, sizeof(daos_size_t));
+	d_iov_set(&sg_iovs[5], &feat_compat, sizeof(daos_size_t));
+	d_iov_set(&sg_iovs[6], &feat_incopat, sizeof(daos_size_t));
+	d_iov_set(&sg_iovs[7], &mkfs_time, sizeof(daos_size_t));
+	d_iov_set(&sg_iovs[8], &state_time, sizeof(daos_size_t));
 
 	for (i = 0; i < SB_AKEYS; i++) {
 		sgls[i].sg_nr		= 1;
