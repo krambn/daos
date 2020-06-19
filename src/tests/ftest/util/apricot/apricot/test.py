@@ -33,7 +33,7 @@ import distro
 from getpass import getuser
 
 from avocado import Test as avocadoTest
-from avocado import skip, TestFail, fail_on
+from avocado import skipIf, TestFail, fail_on
 
 import fault_config_utils
 from pydaos.raw import DaosContext, DaosLog, DaosApiError
@@ -63,15 +63,15 @@ def skipForTicket(ticket, on_distros=[]):
        Optoinally, only on some distributions.
     """
 
-    # see if we are skipping only on some distros and if our distro is one
-    # of them
+    skip_test = True
     if on_distros:
-        if "-".join(distro.linux_distribution(
-            full_distribution_name=False)[:2]) not in on_distros:
-            # skip doesn't apply on this distro
-            return skip(False)
+        # Only skip a test if the current distribution is specified
+        # Do not skip this test if the distro is not specified
+        skip_test = "-".join(distro.linux_distribution(
+            full_distribution_name=False)[:2]) in on_distros
 
-    return skip("Skipping until {} is fixed.".format(ticket))
+    return skipIf(skip_test, "Skipping until {} is fixed.".format(ticket))
+
 # pylint: enable=invalid-name
 
 
