@@ -231,7 +231,7 @@ main(int argc, char **argv)
 	char				*fname = NULL;
 	daos_iod_t			*akey_sb;
 	daos_key_t			dkey_sb;
-	static struct option		 long_options[] = {
+	static struct option		long_options[] = {
 		{"fname",		required_argument, 0, 'f'},
 		{"help",		no_argument, 0, 'h'},
 	};
@@ -239,8 +239,8 @@ main(int argc, char **argv)
 	int				 rc;
 	int				 index = 0;
 	int				 opt = 0;
-	int				akey_count;
-	int				dfs_inode_size;
+	int				 akey_count;
+	int				 dfs_inode_size;
 
 	rc = daos_debug_init(NULL);
 	if (rc) {

@@ -38,21 +38,21 @@
 /** D-key name of SB metadata */
 #define SB_DKEY		"DFS_SB_METADATA"
 
-#define SB_AKEYS	9
+#define SB_AKEYS		9
 /** A-key name of SB magic */
-#define MAGIC_NAME	"DFS_MAGIC"
+#define MAGIC_NAME		"DFS_MAGIC"
 /** A-key name of SB version */
 #define SB_VERSION_NAME	"DFS_SB_VERSION"
 /** A-key name of DFS Layout Version */
-#define LAYOUT_NAME	"DFS_LAYOUT_VERSION"
+#define LAYOUT_NAME		"DFS_LAYOUT_VERSION"
 /** A-key name of DFS feature flags */
-#define FEAT_COMPAT_NAME "DFS_SB_FEAT_COMPAT"
+#define FEAT_COMPAT_NAME	"DFS_SB_FEAT_COMPAT"
 /** A-key name of DFS feature flags */
-#define FEAT_INCO_NAME "DFS_SB_FEAT_INCOMPAT"
+#define FEAT_INCO_NAME		"DFS_SB_FEAT_INCOMPAT"
 /** A-key name of DFS namespace creation time */
-#define MKFS_TIME_NAME "DFS_SB_MKFS_TIME"
+#define MKFS_TIME_NAME		"DFS_SB_MKFS_TIME"
 /** A-key name of FS state*/
-#define STATE_NAME "DFS_SB_STATE"
+#define STATE_NAME		"DFS_SB_STATE"
 /** A-key name of Default chunk size */
 #define CS_NAME		"DFS_CHUNK_SIZE"
 /** A-key name of Default Object Class */
@@ -91,7 +91,7 @@
 /** OIDs for Superblock and Root objects */
 #define RESERVED_LO	0
 #define SB_HI		0
-#define ROOT_HI		1
+#define ROOT_HI	1
 
 typedef uint64_t dfs_magic_t;
 typedef uint16_t dfs_sb_ver_t;
@@ -862,7 +862,7 @@ static inline void
 set_daos_iod(bool create, daos_iod_t *iod, char *buf, size_t size)
 {
 	d_iov_set(&iod->iod_name, buf, strlen(buf));
-	iod->iod_nr		= 1;
+	iod->iod_nr	= 1;
 	iod->iod_size	= DAOS_REC_ANY;
 	iod->iod_recxs	= NULL;
 	iod->iod_type	= DAOS_IOD_SINGLE;
@@ -899,7 +899,7 @@ open_sb(daos_handle_t coh, bool create, dfs_attr_t *attr, daos_handle_t *oh)
 	daos_key_t		dkey;
 	dfs_magic_t		magic;
 	dfs_sb_ver_t		sb_ver;
-	dfs_layout_ver_t		layout_ver;
+	dfs_layout_ver_t	layout_ver;
 	daos_size_t		chunk_size = 0;
 	daos_oclass_id_t	oclass = OC_UNKNOWN;
 	daos_obj_id_t		super_oid;
