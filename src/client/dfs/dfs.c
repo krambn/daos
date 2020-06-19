@@ -48,9 +48,9 @@
 /** A-key name of DFS feature flags */
 #define FEAT_COMPAT_NAME	"DFS_SB_FEAT_COMPAT"
 /** A-key name of DFS feature flags */
-#define FEAT_INCO_NAME		"DFS_SB_FEAT_INCOMPAT"
+#define FEAT_INCO_NAME	"DFS_SB_FEAT_INCOMPAT"
 /** A-key name of DFS namespace creation time */
-#define MKFS_TIME_NAME		"DFS_SB_MKFS_TIME"
+#define MKFS_TIME_NAME	"DFS_SB_MKFS_TIME"
 /** A-key name of FS state*/
 #define STATE_NAME		"DFS_SB_STATE"
 /** A-key name of Default chunk size */
