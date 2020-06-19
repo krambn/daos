@@ -71,10 +71,11 @@ func (ssp *FirmwareQueryResp) addHostResponse(hr *HostResponse) error {
 	scmResults := make([]*SCMFirmwareQueryResult, 0, len(pbResp.ScmResults))
 
 	for _, pbScmRes := range pbResp.ScmResults {
-		scmResults = append(scmResults, &SCMFirmwareQueryResult{
+		devResult := &SCMFirmwareQueryResult{
 			DeviceUID:    pbScmRes.Uid,
 			DeviceHandle: pbScmRes.Handle,
-		})
+		}
+		scmResults = append(scmResults, devResult)
 	}
 	return nil
 }
